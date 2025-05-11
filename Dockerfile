@@ -12,7 +12,7 @@ RUN cargo build --release
 FROM gcr.io/distroless/static-debian11
 
 # ビルドしたバイナリをコピー
-COPY --from=build /app/target/release/dinamify-poc /usr/local/bin/dinamify-poc
+COPY --from=build /app/target/release/dinamify-poc /dinamify-poc
 
 EXPOSE 8080
-CMD ["/usr/local/bin/dinamify-poc"]
+CMD ["/dinamify-poc"]
