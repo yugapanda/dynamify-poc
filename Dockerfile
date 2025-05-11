@@ -1,11 +1,18 @@
+# --- builder --------------------------------------------------
 FROM rust:1.86-bullseye AS builder
-RUN apt-get update && apt-get install -y musl-tools \
-    && rustup target add x86_64-unknown-linux-musl
 WORKDIR /app
-COPY . .
-RUN cargo build --release --target x86_64-unknown-linux-musl \
-    && strip target/x86_64-unknown-linux-musl/release/dinamify-poc
 
-FROM gcr.io/distroless/static-debian12:nonroot
-COPY --from=builder /app/target/x86_64-unknown-linux-musl/release/dinamify-poc /dinamify-poc
-ENTRYPOINT ["/dinamify-poc"]
+# OpenSSL 開発パッケージを追加（glibc 用）
+RUN apt-get update && \
+    apt-get install -y libssl-dev pkg-config
+
+# ここは **デフォルト target (x86_64-unknown-linux-gnu)**
+COPY . .
+RUN cargo build --release \
+    && strip target/release/dinamify-poc             # サイズ削減
+
+# --- runtime --------------------------------------------------
+FROM gcr.io/distroless/cc-debian12:nonroot
+WORKDIR /app
+COPY --from=builder /app/target/release/dinamify-poc .
+ENTRYPOINT ["/app/dinamify-poc"]
