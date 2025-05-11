@@ -39,12 +39,11 @@ async fn index() -> impl Responder {
             <form id="geminiForm" class="space-y-4">
                 <div>
                     <label for="prompt" class="block text-sm font-medium text-gray-700">Prompt</label>
-                    <textarea id="prompt" name="prompt" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"></textarea>
+                    <textarea id="prompt" placeholder="一陣の風が吹き、草の波が揺れる" name="prompt" rows="4" class="p-4 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"></textarea>
                 </div>
                 <button
                  type="submit"
                  class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                 placeholder="一陣の風が吹き、草の波が揺れる"
                 >
                     Generate
                 </button>
