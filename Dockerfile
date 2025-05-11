@@ -5,8 +5,11 @@ COPY . /app
 RUN rustup target add x86_64-unknown-linux-musl && rustup component add rust-src
 
 WORKDIR /app
+
 RUN apt update && apt install -y musl-tools
-RUN cargo build --release --target=x86_64-unknown-linux-musl
+
+
+RUN apt update && apt install -y musl-tools musl-dev pkg-config libssl-dev
 
 FROM alpine
 
