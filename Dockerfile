@@ -1,18 +1,11 @@
-FROM rust:1.86.0-bullseye AS build
-
-COPY . /app
-
+FROM --platform=$BUILDPLATFORM rust:1.86-bullseye AS builder
+RUN apt-get update && apt-get install -y musl-tools \
+    && rustup target add x86_64-unknown-linux-musl
 WORKDIR /app
+COPY . .
+RUN cargo build --release --target x86_64-unknown-linux-musl \
+    && strip target/x86_64-unknown-linux-musl/release/dinamify-poc
 
-
-# ビルドを実行
-RUN cargo build --release
-
-# 実行用のイメージ
-FROM gcr.io/distroless/static-debian11
-
-# ビルドしたバイナリをコピー
-COPY --from=build /app/target/release/dinamify-poc /dinamify-poc
-
-EXPOSE 8080
-CMD ["/dinamify-poc"]
+FROM gcr.io/distroless/static-debian12:nonroot
+COPY --from=builder /app/target/x86_64-unknown-linux-musl/release/dinamify-poc /dinamify-poc
+ENTRYPOINT ["/dinamify-poc"]
