@@ -1,5 +1,5 @@
 # --- builder --------------------------------------------------
-FROM rust:1.86-bullseye AS builder
+FROM rust:1.86-bookworm AS builder
 WORKDIR /app
 
 # OpenSSL 開発パッケージを追加（glibc 用）
