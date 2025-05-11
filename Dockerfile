@@ -15,4 +15,5 @@ RUN cargo build --release \
 FROM gcr.io/distroless/cc-debian12:nonroot
 WORKDIR /app
 COPY --from=builder /app/target/release/dinamify-poc .
+EXPOSE 8080
 ENTRYPOINT ["/app/dinamify-poc"]
